@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  backend:
+    container_name: backend
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - backend_db
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./blog:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: 'True'
+    env_file:
+      - .env
+  
+  backend_db:
+    container_name: backend_db
+    image: postgres:13.5
+    restart: unless-stopped
+    env_file:
+      - .env
+  
+  backend_redis:
+    container_name: backend_redis
+    restart: unless-stopped
+    image: redis
+    ports:
+      - "6379:6379"
+    command:
+      [
+        "redis-server",
+        "--save 60 1000",
+        "--save 300 1",
+        "--requirepass",
+        "${REDIS_PASS}",
+      ]
+  

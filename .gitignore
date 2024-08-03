@@ -1,0 +1,4 @@
+\requirements.in
+*.env
+*.sql
+*.sql.gz
