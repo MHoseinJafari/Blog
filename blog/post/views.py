@@ -1,4 +1,4 @@
-from .models import Post,Vote
+from .models import Post
 from . import serializers
 from django.db import transaction
 
@@ -21,13 +21,13 @@ class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(visible=True)
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    OrderingFilter = ['created_date']
+    OrderingFilter = ["created_date"]
 
     def get_serializer_class(self):
-        if self.action == 'create':
+        if self.action == "create":
             return serializers.PostCreateSerializer
         return serializers.PostSerializer
-    
+
     def perform_create(self, serializer):
         with transaction.atomic():
             user = self.request.user
@@ -43,7 +43,9 @@ class VoteApiView(APIView):
         data = request.data
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
-        vote = serializer.validated_data['vote']
-        post = serializer.validated_data['post']
+        vote = serializer.validated_data["vote"]
+        post = serializer.validated_data["post"]
         post.vote_submit(user=request.user, amount=vote)
-        return Response({'detail': 'Your vote has been successfully submitted'})
+        return Response(
+            {"detail": "Your vote has been successfully submitted"}
+        )

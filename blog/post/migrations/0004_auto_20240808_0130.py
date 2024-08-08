@@ -9,26 +9,31 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('post', '0003_auto_20240807_1741'),
+        ("post", "0003_auto_20240807_1741"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='post',
-            old_name='number_of_voters',
-            new_name='voters',
+            model_name="post",
+            old_name="number_of_voters",
+            new_name="voters",
         ),
         migrations.RemoveField(
-            model_name='post',
-            name='temp_rate',
+            model_name="post",
+            name="temp_rate",
         ),
         migrations.RemoveField(
-            model_name='vote',
-            name='temp_vote',
+            model_name="vote",
+            name="temp_vote",
         ),
         migrations.AlterField(
-            model_name='post',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post', related_query_name='post', to=settings.AUTH_USER_MODEL),
+            model_name="post",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="post",
+                related_query_name="post",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

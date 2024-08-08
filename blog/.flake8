@@ -1,0 +1,21 @@
+[flake8]
+
+exclude =
+    .git,
+    .gitignore,
+    *.pot,
+    *.py[co],
+    __pycache__,
+    venv,
+    .env
+    settings.py,
+    __init__,
+    migrations,
+    user/views.py,
+    post/management/commands/insert_data.py,
+    tests,
+    
+
+ignore = 
+    E712,
+    W503

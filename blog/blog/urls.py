@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import permissions
@@ -34,9 +35,9 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('v1/post/', include('post.urls'), name='post'),
-    path('v1/user/', include('user.urls'), name='user'),
+    path("admin/", admin.site.urls),
+    path("v1/post/", include("post.urls"), name="post"),
+    path("v1/user/", include("user.urls"), name="user"),
     path(
         "swagger/output.json/",
         schema_view.without_ui(cache_timeout=0),
@@ -52,5 +53,4 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
-
 ]

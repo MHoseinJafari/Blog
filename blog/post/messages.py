@@ -1,2 +1,2 @@
 class Message:
-    invalid_post = {'detail': 'امکان ثبت رای برای این پست نیست'}
+    invalid_post = {"detail": "It is not possible to vote for this post"}

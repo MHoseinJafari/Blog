@@ -1,5 +1,5 @@
 from . import serializers
-from.models import Profile
+from .models import Profile
 from django.contrib.auth.models import User
 
 from rest_framework import generics, status
@@ -18,19 +18,21 @@ class Signup(APIView):
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         with transaction.atomic():
-            username = serializer.validated_data['username']
-            password = serializer.validated_data['password']
+            username = serializer.validated_data["username"]
+            password = serializer.validated_data["password"]
 
-            user = User.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(
+                username=username, password=password
+            )
             Profile.create_profile(user=user)
             token = RefreshToken.for_user(user)
             data = {
-            'refresh': str(token),
-            'access': str(token.access_token),
+                "refresh": str(token),
+                "access": str(token.access_token),
             }
-            response = {'detail': 'succeed', "tokens":  data}
+            response = {"detail": "succeed", "tokens": data}
             return Response(data=response, status=status.HTTP_201_CREATED)
-            
+
 
 class Login(APIView):
     serializer_class = serializers.LoginSerializer
@@ -39,14 +41,14 @@ class Login(APIView):
         data = request.data
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
-        username = serializer.validated_data['username']
+        username = serializer.validated_data["username"]
         user = User.objects.get(username=username)
         token = RefreshToken.for_user(user)
         data = {
-             'refresh': str(token),
-             'access': str(token.access_token),
-             }
-        response = {'detail': 'succeed', "tokens":  data}
+            "refresh": str(token),
+            "access": str(token.access_token),
+        }
+        response = {"detail": "succeed", "tokens": data}
         return Response(data=response)
 
 

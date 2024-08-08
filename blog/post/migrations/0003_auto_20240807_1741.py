@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('post', '0002_vote_processed'),
+        ("post", "0002_vote_processed"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='temp_rate',
+            model_name="post",
+            name="temp_rate",
             field=models.FloatField(default=0),
         ),
         migrations.AddField(
-            model_name='vote',
-            name='temp_vote',
+            model_name="vote",
+            name="temp_vote",
             field=models.IntegerField(default=0),
         ),
         migrations.AlterField(
-            model_name='vote',
-            name='vote',
+            model_name="vote",
+            name="vote",
             field=models.IntegerField(default=0),
         ),
     ]
