@@ -1,33 +1,11 @@
 version: '3.9'
 
 services:
-  backend:
-    container_name: backend
-    build: .
-    restart: unless-stopped
-    depends_on:
-      - backend_db
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./blog:/app
-    ports:
-      - "8000:8000"
-    environment:
-      DEBUG: 'True'
-    env_file:
-      - .env
-  
-  backend_db:
-    container_name: backend_db
-    image: postgres:13.5
-    restart: unless-stopped
-    env_file:
-      - .env
-  
+
   backend_redis:
     container_name: backend_redis
     restart: unless-stopped
-    image: redis
+    image: redis:5.0.14
     ports:
       - "6379:6379"
     command:
@@ -35,7 +13,58 @@ services:
         "redis-server",
         "--save 60 1000",
         "--save 300 1",
-        "--requirepass",
-        "${REDIS_PASS}",
+        
       ]
+
+    
+  backend_db:
+    container_name: backend_db
+    image: postgres:13.5
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  backend:
+    container_name: backend
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - backend_db
+      - backend_redis
+    command: python manage.py runserver 0:80
+    volumes:
+      - ./blog:/app
+    ports:
+      - 8088:80
+    environment:
+      DEBUG: 'True'
+    env_file:
+      - .env
   
+  backend_celery:
+    container_name: backend_celery
+    build: .
+    command: celery -A blog worker --loglevel=info
+    restart: unless-stopped
+    volumes:
+      - ./blog:/app
+    depends_on:
+      - backend_redis
+      - backend
+
+    env_file:
+      - .env
+
+
+  backend_celery_beat:
+    build: .
+    command: celery -A blog beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+    volumes:
+      - ./blog:/app
+
+    depends_on:
+      - backend_redis
+      
+    env_file:
+      - .env

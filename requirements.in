@@ -1,0 +1,33 @@
+# general modules
+django  >3.2,<3.3
+python-decouple
+djangorestframework
+
+# third party modules
+markdown      
+django-filter
+drf-yasg[validation]
+djangorestframework-simplejwt
+envparse
+pip-tools
+Pillow
+psycopg2-binary
+#deployment modules
+gunicorn
+redis
+cryptography
+ipython < 8.9
+
+
+#formatter and tests modules
+black
+flake8
+Faker
+# email third party modules
+django-mail-templated
+
+# background processing and caching
+redis
+django-redis
+celery<5.2
+django-celery-beat
